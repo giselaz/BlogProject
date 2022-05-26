@@ -5,8 +5,10 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 export class RoleEntity {
   @PrimaryGeneratedColumn()
   id: number;
+
   @Column()
   name: string;
+
   @OneToMany(() => User, (user) => user.roles)
   user: User[];
 }

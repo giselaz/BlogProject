@@ -17,9 +17,7 @@ export class Image {
   @Column()
   name: string;
 
-  @ManyToOne(() => User, (user) => user.image, {
-    cascade: true,
-  })
+  @ManyToOne(() => User, (user) => user.image)
   user: User;
 
   // @ManyToMany(() => Category, { cascade: true })
