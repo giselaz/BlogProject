@@ -1,4 +1,5 @@
 import { Category } from 'src/category/category.entity';
+import { Comments } from 'src/comments/comments.entity';
 import { User } from 'src/user/user.entity';
 import {
   Entity,
@@ -7,6 +8,7 @@ import {
   ManyToOne,
   ManyToMany,
   JoinTable,
+  OneToMany,
 } from 'typeorm';
 
 @Entity()
@@ -20,7 +22,10 @@ export class Image {
   @ManyToOne(() => User, (user) => user.image)
   user: User;
 
-  // @ManyToMany(() => Category, { cascade: true })
-  // @JoinTable()
-  // categories: Category[];
+  @ManyToMany(() => Category, { cascade: true })
+  @JoinTable()
+  categories: Category[];
+
+  @OneToMany(() => Comments, (comments) => comments.image)
+  comments: Comments[];
 }

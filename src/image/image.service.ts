@@ -1,39 +1,34 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Image } from './image.entity';
+import { ImageDto } from './dto/image.dto';
+import { CommentsService } from 'src/comments/comments.service';
 import { User } from 'src/user/user.entity';
-import { Category } from 'src/category/category.entity';
 // import { CategoryService } from 'src/category/category.service';
 
 @Injectable()
 export class ImageService {
-  constructor(@InjectRepository(Image) private repo: Repository<Image>) {}
-
-  async create(name: string, user: User, categories: Category[]) {
-    // const category = await this.categoryService.findOne(categories);
-    // if (!category) {
-    //   throw new NotFoundException('category not found');
-    // }
-    console.log(categories);
-    console.log(user);
-    const image = this.repo.create({
-      name,
-      user,
-      // categories,
-    });
-    return this.repo.save(image);
-  }
-
+  constructor(
+    @InjectRepository(Image) private repo: Repository<Image>,
+    private commentsService: CommentsService,
+  ) {}
   findOne(id: number) {
     if (!id) {
       return null;
     }
-    return this.repo.findOne(id);
+    return this.repo.findOne(id, {
+      relations: ['user', 'comments'],
+    });
   }
-  // , {
-  //   relations: ['user'],
-  // }
+  async create(image: Partial<ImageDto>, user: User) {
+    if (await this.repo.findOne({ name: image.name })) {
+      throw new BadRequestException('Image already exists');
+    }
+    const newImage = this.repo.create(image);
+    return this.repo.save(newImage);
+  }
+
   // find(name: string) {
   //   return this.repo.find({ name });
   // }
@@ -46,11 +41,17 @@ export class ImageService {
     return this.repo.save(updatedImage);
   }
   async delete(id: number) {
-    const ImageToDelete = await this.repo.findOne(id);
-    if (!ImageToDelete) {
+    const imageToDelete = await this.repo.findOne(id);
+
+    if (imageToDelete.comments) {
+      for (const comment of imageToDelete.comments) {
+        this.commentsService.remove(comment);
+      }
+    }
+    if (!imageToDelete) {
       throw new Error('Image not found');
     }
-    return this.repo.delete(id);
+    return this.repo.delete(imageToDelete);
   }
 
   // async find(image: Image) {
