@@ -4,9 +4,7 @@ import {
   Body,
   Injectable,
   UseGuards,
-  Get,
   Param,
-  NotFoundException,
   Patch,
   Delete,
   Req,
@@ -15,40 +13,28 @@ import { ImageService } from './image.service';
 import { JwtAuthGuards } from 'src/auth/jwt-auth.guard';
 import { UserService } from 'src/user/user.service';
 import { Image } from './image.entity';
-// import { Roles } from 'src/role/role.decorator';
-import RolesGuard from 'src/role/roles.guard';
-import { Role } from 'src/role/role.enum';
-import { ImageDto } from './dto/image.dto';
 
 @Controller('image')
 @Injectable()
 export class ImageController {
-  constructor(
-    private imageService: ImageService,
-    private userService: UserService,
-  ) {}
-
-  @UseGuards(JwtAuthGuards, RolesGuard(Role.Admin))
-  @Post('/newImage')
-  async createImage(@Body() body: ImageDto, @Req() request) {
-    const user = request.user;
-    const image = await this.imageService.create(body, user);
-    return image;
-  }
+  constructor(private imageService: ImageService) {}
 
   @UseGuards(JwtAuthGuards)
-  @Get('/:id')
-  async getImage(@Param('id') id: string) {
-    const image = await this.imageService.findOne(parseInt(id));
-    if (!image) {
-      throw new NotFoundException('image not found');
-    }
+  @Post('/newImage')
+  async createImage(@Body() body: Image, @Req() request) {
+    const user = request.user;
+    const image = await this.imageService.create(
+      body.name,
+      body.description,
+      user,
+    );
     return image;
   }
+
   @UseGuards(JwtAuthGuards)
   @Patch('/:id')
   async updateImage(@Param('id') id: string, @Body() body: Image) {
-    return await this.imageService.Update(parseInt(id), body);
+    return await this.imageService.update(parseInt(id), body);
   }
   @Delete('/:id')
   async deleteImage(@Param('id') id: string) {

@@ -19,6 +19,9 @@ export class Image {
   @Column()
   name: string;
 
+  @Column()
+  description: string;
+
   @ManyToOne(() => User, (user) => user.image)
   user: User;
 
@@ -26,6 +29,10 @@ export class Image {
   @JoinTable()
   categories: Category[];
 
-  @OneToMany(() => Comments, (comments) => comments.image)
+  @OneToMany(() => Comments, (comments) => comments.image, {
+    cascade: true,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   comments: Comments[];
 }

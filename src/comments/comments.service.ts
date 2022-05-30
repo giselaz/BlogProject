@@ -35,6 +35,6 @@ export class CommentsService {
   }
 
   remove(comments: Partial<Comments>) {
-    return this.repo.delete(comments);
+    return this.repo.delete(comments.id);
   }
 }

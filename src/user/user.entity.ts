@@ -10,7 +10,7 @@ import { Image } from 'src/image/image.entity';
 import * as bcrypt from 'bcrypt';
 import { Exclude } from 'class-transformer';
 import { RoleEntity } from 'src/role/role.entity';
-
+import { Comments } from 'src/comments/comments.entity';
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
@@ -32,6 +32,8 @@ export class User {
   roles: RoleEntity;
   // @Column()
   // roles: Role[];
+  @OneToMany(() => Comments, (comments) => comments.user)
+  comments: Comments[];
 
   @BeforeInsert()
   async hashPassword() {

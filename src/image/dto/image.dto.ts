@@ -5,10 +5,6 @@ import { User } from 'src/user/user.entity';
 export class ImageDto {
   @IsString()
   name: string;
-
-  @IsOptional()
-  comments: Comments[];
-
   @IsString()
   user: User;
 }

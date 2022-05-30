@@ -11,21 +11,23 @@ import { CategoryModule } from './category/category.module';
 import { Category } from './category/category.entity';
 import { RoleEntity } from './role/role.entity';
 import { RoleModule } from './role/role.module';
-import { APP_GUARD } from '@nestjs/core';
-import RolesGuard from './role/roles.guard';
+import { CommentsModule } from './comments/comments.module';
+// import RolesGuard from './role/roles.guard';
+import { Comments } from './comments/comments.entity';
 @Module({
   imports: [
     ImageModule,
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: 'db.sqlite',
-      entities: [Image, User, Category, RoleEntity],
+      entities: [Image, User, Category, Comments, RoleEntity],
       synchronize: true,
     }),
     UserModule,
     AuthModule,
     CategoryModule,
     RoleModule,
+    CommentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

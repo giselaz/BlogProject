@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Injectable,
   NotFoundException,
   Param,
