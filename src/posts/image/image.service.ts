@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Image } from './image.entity';
 import { CommentsService } from '../comments/comments.service';
 import { User } from 'src/user/user.entity';
+import { Category } from 'src/category/category.entity';
 @Injectable()
 export class ImageService {
   constructor(
@@ -25,7 +26,12 @@ export class ImageService {
   //   }
   // }
 
-  async create(name: string, description: string, user: User) {
+  async create(
+    name: string,
+    description: string,
+    user: User,
+    categories: Category,
+  ) {
     if (await this.findOne({ name })) {
       throw new BadRequestException('Image already exists');
     }
@@ -33,6 +39,7 @@ export class ImageService {
       name,
       description,
       user,
+      categories: [categories]
     });
     return this.repo.save(newImage);
   }

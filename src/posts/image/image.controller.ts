@@ -26,6 +26,7 @@ export class ImageController {
       body.name,
       body.description,
       user,
+      body.categories[0],
     );
     return image;
   }
