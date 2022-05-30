@@ -5,11 +5,14 @@ import { Image } from './image.entity';
 import { CommentsService } from '../comments/comments.service';
 import { User } from 'src/user/user.entity';
 import { Category } from 'src/category/category.entity';
+import { CategoryService } from 'src/category/category.service';
+import { ImageDto } from './dto/image.dto';
 @Injectable()
 export class ImageService {
   constructor(
     @InjectRepository(Image) private repo: Repository<Image>,
     private commentsService: CommentsService,
+    private categoryService: CategoryService,
   ) {}
   findOne(options: Partial<Image>) {
     if (!options) {
@@ -26,20 +29,27 @@ export class ImageService {
   //   }
   // }
 
-  async create(
-    name: string,
-    description: string,
-    user: User,
-    categories: Category,
-  ) {
-    if (await this.findOne({ name })) {
+  async create(image: ImageDto, user: User) {
+    if (await this.findOne({ name: image.name })) {
       throw new BadRequestException('Image already exists');
     }
+    const dbCategories = [];
+    for (const category of image.categories) {
+      let dbCategory = await this.categoryService.findOne({
+        description: category,
+      });
+
+      if (!dbCategory) {
+        dbCategory = await this.categoryService.create(category);
+      }
+      dbCategories.push(dbCategory);
+    }
+
     const newImage = this.repo.create({
-      name,
-      description,
+      name: image.name,
+      description: image.description,
       user,
-      categories: [categories]
+      categories: dbCategories,
     });
     return this.repo.save(newImage);
   }

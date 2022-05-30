@@ -10,7 +10,7 @@ export class CategoryService {
     const category = this.repo.create({ description });
     return this.repo.save(category);
   }
-  findOne(id: number) {
-    return this.repo.findOne(id);
+  findOne(options: Partial<Category>) {
+    return this.repo.findOne(options);
   }
 }

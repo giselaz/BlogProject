@@ -12,6 +12,7 @@ import {
 import { ImageService } from './image.service';
 import { JwtAuthGuards } from 'src/user/auth/jwt-auth.guard';
 import { Image } from '../image/image.entity';
+import { ImageDto } from './dto/image.dto';
 
 @Controller('image')
 @Injectable()
@@ -20,14 +21,9 @@ export class ImageController {
 
   @UseGuards(JwtAuthGuards)
   @Post('/newImage')
-  async createImage(@Body() body: Image, @Req() request) {
+  async createImage(@Body() body: ImageDto, @Req() request) {
     const user = request.user;
-    const image = await this.imageService.create(
-      body.name,
-      body.description,
-      user,
-      body.categories[0],
-    );
+    const image = await this.imageService.create(body, user);
     return image;
   }
 
