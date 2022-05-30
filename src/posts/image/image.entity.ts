@@ -1,5 +1,5 @@
 import { Category } from 'src/category/category.entity';
-import { Comments } from 'src/comments/comments.entity';
+import { Comments } from '../comments/comments.entity';
 import { User } from 'src/user/user.entity';
 import {
   Entity,

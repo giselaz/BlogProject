@@ -1,9 +1,7 @@
 import {
   Body,
   Controller,
-  Delete,
   Injectable,
-  NotFoundException,
   Param,
   Patch,
   Post,
@@ -12,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { CommentsService } from './comments.service';
 import { Comments } from './comments.entity';
-import { JwtAuthGuards } from 'src/auth/jwt-auth.guard';
+import { JwtAuthGuards } from 'src/user/auth/jwt-auth.guard';
 
 @Controller('comments')
 @Injectable()

@@ -2,9 +2,8 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Image } from './image.entity';
-import { CommentsService } from 'src/comments/comments.service';
+import { CommentsService } from '../comments/comments.service';
 import { User } from 'src/user/user.entity';
-
 @Injectable()
 export class ImageService {
   constructor(
@@ -19,17 +18,28 @@ export class ImageService {
       relations: ['user', 'comments'],
     });
   }
+
+  // async create(image: Partial<Image>, category: Category[]) {
+  //   if (await this.findOne({ name: image.name })) {
+  //     throw new BadRequestException('Image already exists');
+  //   }
+  // }
+
   async create(name: string, description: string, user: User) {
     if (await this.findOne({ name })) {
       throw new BadRequestException('Image already exists');
     }
-    const newImage = this.repo.create({ name, description, user });
+    const newImage = this.repo.create({
+      name,
+      description,
+      user,
+    });
     return this.repo.save(newImage);
   }
 
-  // find(name: string) {
-  //   return this.repo.find({ name });
-  // }
+  find(name: string) {
+    return this.repo.find({ name });
+  }
   async update(id: number, attrs: Partial<Image>) {
     const updatedImage = await this.repo.findOne(id);
     if (!updatedImage) {
@@ -49,11 +59,5 @@ export class ImageService {
       throw new Error('Image not found');
     }
     return this.repo.delete(imageToDelete.id);
-  }
-
-  async find(image: Image) {
-    return await this.repo.find({
-      relations: ['user'],
-    });
   }
 }

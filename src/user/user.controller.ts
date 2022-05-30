@@ -14,7 +14,7 @@ import { CreateUserDto } from './dtos/create-user.dto';
 import { Serialize } from '../interceptors/serialize.interceptor';
 import { UserDto } from './dtos/user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
-import { JwtAuthGuards } from 'src/auth/jwt-auth.guard';
+import { JwtAuthGuards } from './auth/jwt-auth.guard';
 import { Role } from 'src/role/role.enum';
 
 @Controller('user')

@@ -6,8 +6,6 @@ import { NotFoundException } from '@nestjs/common';
 import { UserDto } from './dtos/user.dto';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { RoleService } from 'src/role/roles.service';
-import { RoleEntity } from 'src/role/role.entity';
-import { Roles } from 'src/role/role.decorator';
 @Injectable()
 export class UserService {
   constructor(
@@ -18,7 +16,6 @@ export class UserService {
     const role = await this.roleService.findOne({
       name: user.roles,
     });
-    // console.log(role);
     if (!role) {
       throw new NotFoundException('Role does not exist');
     }

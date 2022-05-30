@@ -6,11 +6,11 @@ import {
   OneToMany,
   ManyToOne,
 } from 'typeorm';
-import { Image } from 'src/image/image.entity';
+import { Image } from 'src/posts/image/image.entity';
 import * as bcrypt from 'bcrypt';
 import { Exclude } from 'class-transformer';
 import { RoleEntity } from 'src/role/role.entity';
-import { Comments } from 'src/comments/comments.entity';
+import { Comments } from 'src/posts/comments/comments.entity';
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()

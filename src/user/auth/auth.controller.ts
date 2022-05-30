@@ -9,7 +9,6 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { LoginDto } from 'src/user/dtos/login.dto';
 import { UpdateUserDto } from 'src/user/dtos/update-user.dto';
 import { UserDto } from 'src/user/dtos/user.dto';
 import { UserService } from 'src/user/user.service';

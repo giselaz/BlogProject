@@ -10,9 +10,8 @@ import {
   Req,
 } from '@nestjs/common';
 import { ImageService } from './image.service';
-import { JwtAuthGuards } from 'src/auth/jwt-auth.guard';
-import { UserService } from 'src/user/user.service';
-import { Image } from './image.entity';
+import { JwtAuthGuards } from 'src/user/auth/jwt-auth.guard';
+import { Image } from '../image/image.entity';
 
 @Controller('image')
 @Injectable()
