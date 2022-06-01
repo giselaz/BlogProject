@@ -16,6 +16,7 @@ import { UserDto } from './dtos/user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { JwtAuthGuards } from './auth/jwt-auth.guard';
 import { Role } from 'src/role/role.enum';
+import RoleGuard from 'src/role/roles.guard';
 
 @Controller('user')
 @Injectable()
@@ -35,5 +36,10 @@ export class UserController {
   @Patch('/:id')
   async updateUser(@Param('id') id: string, @Body() body: UpdateUserDto) {
     return await this.userService.update(parseInt(id), body);
+  }
+  @UseGuards(JwtAuthGuards)
+  @Delete('/:id')
+  async deleteUser(@Param('id') id: string) {
+    return await this.userService.remove({ id: parseInt(id) });
   }
 }

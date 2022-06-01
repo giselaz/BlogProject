@@ -24,7 +24,7 @@ export class CommentsService {
     return this.repo.save(comments);
   }
 
-  async Update(id: number, attrs: Partial<Comments>) {
+  async update(id: number, attrs: Partial<Comments>) {
     const updatedComment = await this.findOne({ id });
     if (!updatedComment) {
       throw new Error('comment not found');

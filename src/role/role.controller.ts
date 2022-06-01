@@ -14,7 +14,7 @@ import { RoleService } from './roles.service';
 export class RoleController {
   constructor(private roleService: RoleService) {}
 
-  @Post('/newRole')
+  @Post('')
   async createRole(@Body() body: RoleEntity) {
     return await this.roleService.create(body.name);
   }

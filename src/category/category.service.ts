@@ -13,4 +13,12 @@ export class CategoryService {
   findOne(options: Partial<Category>) {
     return this.repo.findOne(options);
   }
+
+  async update(id: number, attrs: Partial<Category>) {
+    const updateCategory = await this.findOne({ id });
+    if (!updateCategory) {
+      throw new Error('category not found');
+    }
+    Object.assign(updateCategory, attrs);
+  }
 }
